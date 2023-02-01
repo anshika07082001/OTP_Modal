@@ -2,25 +2,20 @@ import React, { useState } from 'react'
 import OtpLayout from './ OtpLayout'
 
 const Register = () => {
-  console.log('register component')
   var [open,setOpen]=useState(false)
   var [num,setNum]=useState(0)  
 
+  // Function Handles the modal component
   const handleModal = ()=>{
     setOpen(true)
     generateNum()
   }
-
+  // function generates the random number
   const generateNum = ()=>{
     num = Math.floor(Math.random()*90000+10000)
     if(num.toString().match(/^((?!(0))[0-9]{5})$/)){
       setNum(num)
     }
-    // if(inp1Ref.current!==null){
-    //   if(inp1Ref.current.value==''){
-    //     inp1Ref.current.focus()
-    //   }
-    // }
   }
 
   return (
