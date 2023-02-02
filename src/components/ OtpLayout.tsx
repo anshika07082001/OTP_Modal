@@ -22,7 +22,7 @@ const OtpLayout = (props:OtpProps) => {
     var [time,setTime]=useState(false)
     var [msg,setMsg]=useState('')
     var [sec,setSec]=useState(59)
-    var [limit,setLimit]=useState(5)
+    var [limit,setLimit]=useState(4)
     const inpRefs = useRef<any>([])
     var interval:any,modalInterval:any
 
@@ -33,6 +33,7 @@ const OtpLayout = (props:OtpProps) => {
         }
         if(sec==0){
             setDisabled(false)
+            if(!time)
             setTime(false)
         }
     },[sec])
@@ -120,8 +121,7 @@ const OtpLayout = (props:OtpProps) => {
     }
 
   return (
-    <div>
-      <Modal open={props.open} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+    <Modal open={props.open} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
             <div className='heading'>
                 <Typography id="modal-modal-title" variant="h6" component="h2">Verify Email Address ({props.num})</Typography>
@@ -144,8 +144,7 @@ const OtpLayout = (props:OtpProps) => {
               {time?<label className='error'>00:{sec}</label>:<></>}
             </div>
         </Box>
-      </Modal>
-    </div>
+    </Modal>
   );
 }
 
