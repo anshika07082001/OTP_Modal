@@ -102,6 +102,7 @@ const OtpLayout = (props:OtpProps) => {
             setDisabled(true)
             clearInterval(interval)
             setSec(59)
+            props.generateNum()
         }
         else{
             setMsg('Attempt Limit Exceed')
@@ -116,7 +117,7 @@ const OtpLayout = (props:OtpProps) => {
     // Reset Function 
     const reset=()=>{
         setNumArr([])
-        props.generateNum()
+        
         setBorder('noneBorder')
     }
 
