@@ -19,22 +19,19 @@ const OtpLayout = (props:OtpProps) => {
     var [border,setBorder]=useState('noneBorder')
     var [errColor,setErrColor]=useState('')
     var [disabled,setDisabled]=useState(true)
-    var [time,setTime]=useState(false)
     var [msg,setMsg]=useState('')
-    var [sec,setSec]=useState(59)
+    var [sec,setSec]=useState(5)
     var [limit,setLimit]=useState(4)
     const inpRefs = useRef<any>([])
-    var interval:any,modalInterval:any
+    var modalInterval:any
+
+    const intervalId=useRef<any>()
 
     useEffect(()=>{
-        setTime(true)
-        if(!interval){
-            interval = setInterval(timer,1000)
-        }
+        clearInterval(intervalId.current)
+        intervalId.current = setInterval(timer,1000)
         if(sec==0){
             setDisabled(false)
-            if(!time)
-            setTime(false)
         }
     },[sec])
 
@@ -68,7 +65,7 @@ const OtpLayout = (props:OtpProps) => {
                 setErrColor('success')
                 setMsg('Matched successfully')
                 if(!modalInterval){
-                    modalInterval = setInterval(()=>props.setOpen(false),1000)
+                    modalInterval = setTimeout(()=>props.setOpen(false),1000)
                 }
             }     
             else{
@@ -86,27 +83,22 @@ const OtpLayout = (props:OtpProps) => {
     const timer =()=>{
        if(sec>0){
         sec--
-        setInterval(()=>{
-            setSec(sec)
-        },1000)
+        setSec(sec)
        }
     }
     
     // Function regenerates the otp random number and resets the values 
     const regenerateNum=()=>{
         if(limit>0){
-            setTime(true)
             setMsg('Passcode Sent Successfully')
             setErrColor('success')
             setLimit(limit-1)
             setDisabled(true)
-            clearInterval(interval)
-            setSec(59)
+            setSec(5)
             props.generateNum()
         }
         else{
             setMsg('Attempt Limit Exceed')
-            setTime(false)
         }
         reset()
         inpRefs.current.map((item:any)=>{
@@ -142,7 +134,7 @@ const OtpLayout = (props:OtpProps) => {
             <div className='resendDiv'>
               <button onClick={regenerateNum} className='button' disabled={disabled}>Resend One-time Passcode</button>
               <label>({limit} Attempts left)</label>
-              {time?<label className='error'>00:{sec}</label>:<></>}
+              <label className='error'>00:{sec}</label>
             </div>
         </Box>
     </Modal>
